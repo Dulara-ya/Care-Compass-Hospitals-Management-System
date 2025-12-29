@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care Compass Hospital Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0iI2JiZGVmYiIgZmlsbC1vcGFjaXR5PSIwLjIiIGQ9Ik0xMS44NjMgMTEuODYzYTEgMSAwIDAxMS40MTQgMGw3NS44NiA3NS44NmExIDEgMCAwMS0xLjQxNCAxLjQxNGwtNzUuODYtNzUuODZhMSAxIDAgMDEwLTEuNDE0eiIvPjxwYXRoIGZpbGw9IiNiYmRlZmIiIGZpbGwtb3BhY2l0eT0iMC4yIiBkPSJNMTEuODYzIDExLjg2M2ExIDEgMCAwMTEuNDE0IDBsNzUuODYgNzUuODZhMSAxIDAgMDEtMS40MTQgMS40MTRsLTc1Ljg2LTc1Ljg2YTEgMSAwIDAxMC0xLjQxNHoiIHRyYW5zZm9ybT0icm90YXRlKDkwLCA1MCwgNTApIi8+PC9zdmc+');
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .user-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: right;
+            animation: slideInRight 0.8s ease-in-out;
+        }
+        
+        .user-name {
+            margin: 0 0 10px 0;
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            text-decoration: none;
+            color: white;
+            background-color: #ff4d4d;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .logout-btn:hover {
+            background-color: #ff3333;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(255, 77, 77, 0.3);
+        }
+        
+        .logo {
+            height: 80px;
+            margin: auto;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        
+        .site-title {
+            margin: 15px 0;
+            color: #007bff;
+            font-size: 2.2rem;
+            text-shadow: 1px 1px 3px rgba(0, 123, 255, 0.2);
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        
+        .card {
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .card.primary {
+            background-color: #007bff;
+        }
+        
+        .card.secondary {
+            background-color: #0056b3;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translateY(-20%);
+        }
+        
+        .card a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            z-index: 1;
+        }
+        
+        .card-icon {
+            height: 60px;
+            margin-bottom: 15px;
+            transition: transform 0.5s;
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.15);
+        }
+        
+        .card h2 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .card p {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            background-color: #264653;
+            color: white;
+            padding: 40px 20px;
+            margin-top: auto;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #007bff, #0056b3, #007bff);
+            animation: gradient 3s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        .footer h3 {
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 1.6rem;
+        }
+        
+        .emergency-number {
+            font-size: 1.3rem;
+            color: #ff6b6b;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            display: inline-block;
+        }
+        
+        .branch-info {
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .branch {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .branch:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .branch b {
+            color: #4ecdc4;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .user-panel {
+                position: relative;
+                top: 0;
+                right: 0;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .branch-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .site-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="user-panel">
+            <a href="Index.php" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        <img src="assets/Images/logo.png" alt="Hospital Logo" class="logo">
+        <h1 class="site-title">Care Compass Hospital Dashboard</h1>
+    </div>
+
+    <div class="grid-container">
+        <div class="card primary">
+            <a href="Make Appoiment.php">
+                <img src="assets/Icon/Appoiment.png" alt="Appointment" class="card-icon">
+                <h2>Make Appointment</h2>
+                <p>Schedule your medical visits</p>
+            </a>
+        </div>
+
+        <div class="card secondary">
+            <a href="Doctor Detils.php">
+                <img src="assets/Icon/Doctor.png" alt="Doctors Details" class="card-icon">
+                <h2>Doctors Details</h2>
+                <p>Find specialist information</p>
+            </a>
+        </div>
+
+        <div class="card primary">
+            <a href="Lab Report Show.php">
+                <img src="assets/Icon/Lab.png" alt="Reports" class="card-icon">
+                <h2>Reports</h2>
+                <p>Access medical records</p>
+            </a>
+        </div>
+
+        <div class="card secondary">
+            <a href="Prescription Show.php">
+                <img src="assets/Icon/prescription.png" alt="Prescription" class="card-icon">
+                <h2>Prescription</h2>
+                <p>View medications</p>
+            </a>
+        </div>
+
+        <div class="card primary">
+            <a href="Emergency.html">
+                <img src="assets/Icon/Emergency.png" alt="Emergency" class="card-icon">
+                <h2>Emergency</h2>
+                <p>Immediate assistance</p>
+            </a>
+        </div>
+
+        <div class="card secondary">
+            <a href="Branch.html">
+                <img src="assets/Icon/About us.png" alt="About Us" class="card-icon">
+                <h2>About Us</h2>
+                <p>View our branches</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h3>Emergency Services</h3>
+        <p>Hotline: <span class="emergency-number">1990</span></p>
+
+        <div class="branch-info">
+            <div class="branch">
+                <p>Colombo Branch <b>+94 11 2345678</b></p>
+            </div>
+            <div class="branch">
+                <p>Kandy Branch <b>+94 81 2345678</b></p>
+            </div>
+            <div class="branch">
+                <p>Galle Branch <b>+94 91 2345678</b></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach((card, index) => {
+                card.style.animation = `fadeIn 0.5s ease-in-out ${index * 0.1}s both`;
+            });
+            const urlParams = new URLSearchParams(window.location.search);
+            const userName = urlParams.get('name') || 'User';
+            document.getElementById('userFirstName').textContent = userName;
+        });
+    </script>
+</body>
+
+</html>
